@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import type { Character, CharacterDatabase } from "../types";
@@ -64,9 +64,11 @@ export function useCharacterDatabase() {
 
   const initialized = useMemo(() => !authLoading, [authLoading]);
 
-  if (initialized && loading) {
-    loadCharacters();
-  }
+  useEffect(() => {
+    if (initialized && loading) {
+      loadCharacters();
+    }
+  }, [initialized, loading, loadCharacters]);
 
   const saveActiveId = useCallback((id: string | null) => {
     setActiveCharacterIdLocal(id);

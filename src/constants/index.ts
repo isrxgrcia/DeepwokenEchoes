@@ -1,4 +1,4 @@
-import type { RaceData, Modifier, Task, RankTier } from '../types';
+import type { Rank, RaceData, Modifier, Task, RankTier } from '../types';
 
 export const COLORS = {
   bg_dark: "#0D0D0D",
@@ -109,6 +109,16 @@ export const RANK_COLORS: Record<RankTier, string> = {
   D: "#4A4A4A",
   E: "#2A2A2A",
 };
+
+export const RANKS: Rank[] = [
+  { name: "W", threshold: 140 },
+  { name: "S", threshold: 112 },
+  { name: "A", threshold: 87 },
+  { name: "B", threshold: 60 },
+  { name: "C", threshold: 30 },
+  { name: "D", threshold: 1 },
+  { name: "E", threshold: 0 },
+];
 
 export const TASK_CATEGORIES = [
   "Progresión",

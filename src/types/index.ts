@@ -21,6 +21,7 @@ export interface Character {
   name: string;
   race: string;
   weapon: string;
+  buildUrl?: string;
   attunements: string[];
   completedTasks: string[];
   activeModifiers: string[];
@@ -43,6 +44,11 @@ export type Attunement =
   | "Ironsing"
   | "Bloodrend";
 
+export interface Rank {
+  name: RankTier;
+  threshold: number;
+}
+
 export type TaskCategory =
   | "Progresión"
   | "Crafting"
@@ -51,3 +57,5 @@ export type TaskCategory =
   | "Special"
   | "Bosses"
   | "Endgame";
+
+export type DashboardSubView = 'inicio' | 'overview' | 'build' | 'abilities';
