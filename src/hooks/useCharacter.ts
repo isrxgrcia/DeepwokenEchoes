@@ -1,100 +1,190 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
+import { supabase } from "../lib/supabase";
+import { useAuth } from "../contexts/AuthContext";
 import type { Character, CharacterDatabase } from "../types";
 import { TASKS, MODIFIERS, RANK_THRESHOLDS } from "../constants";
 import type { RankTier } from "../types";
 
-const STORAGE_KEY = "deepwoken_characters";
+const STORAGE_KEY = "deepwoken_active_character";
 const MAX_CHARACTERS = 6;
 
-const createEmptyCharacter = (name: string): Character => ({
-  id: crypto.randomUUID(),
-  name,
+const createEmptyCharacter = (name: string): Omit<Character, "id" | "createdAt"> => ({
+  name: name.trim(),
   race: "",
   weapon: "",
   attunements: [],
   completedTasks: [],
   activeModifiers: [],
-  createdAt: Date.now(),
 });
 
-const defaultDatabase: CharacterDatabase = {
-  activeCharacterId: null,
-  characters: [],
-};
-
 export function useCharacterDatabase() {
-  const [db, setDb] = useState<CharacterDatabase>(() => {
+  const { user, loading: authLoading } = useAuth();
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeCharacterId, setActiveCharacterIdLocal] = useState<string | null>(() => {
     try {
-      const item = window.localStorage.getItem(STORAGE_KEY);
-      return item ? JSON.parse(item) : defaultDatabase;
+      return window.localStorage.getItem(STORAGE_KEY);
     } catch {
-      return defaultDatabase;
+      return null;
     }
   });
 
-  const saveDb = useCallback((newDb: CharacterDatabase) => {
-    setDb(newDb);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(newDb));
+  const loadCharacters = useCallback(async () => {
+    if (!user) {
+      setCharacters([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("characters")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching characters:", error);
+      setCharacters([]);
+    } else {
+      setCharacters(
+        (data ?? []).map((row) => ({
+          id: row.id,
+          name: row.name,
+          race: row.race,
+          weapon: row.weapon,
+          attunements: row.attunements ?? [],
+          completedTasks: row.completed_tasks ?? [],
+          activeModifiers: row.active_modifiers ?? [],
+          createdAt: new Date(row.created_at).getTime(),
+        }))
+      );
+    }
+    setLoading(false);
+  }, [user]);
+
+  const initialized = useMemo(() => !authLoading, [authLoading]);
+
+  if (initialized && loading) {
+    loadCharacters();
+  }
+
+  const saveActiveId = useCallback((id: string | null) => {
+    setActiveCharacterIdLocal(id);
+    if (id) {
+      window.localStorage.setItem(STORAGE_KEY, id);
+    } else {
+      window.localStorage.removeItem(STORAGE_KEY);
+    }
   }, []);
 
-  const activeCharacter = db.characters.find((c) => c.id === db.activeCharacterId) ?? null;
+  const activeCharacter = characters.find((c) => c.id === activeCharacterId) ?? null;
 
-  const addCharacter = (name: string) => {
-    if (db.characters.length >= MAX_CHARACTERS) return false;
+  const addCharacter = async (name: string): Promise<boolean> => {
+    if (!user) return false;
+    if (characters.length >= MAX_CHARACTERS) return false;
     if (!name.trim()) return false;
-    
-    const newChar = createEmptyCharacter(name.trim());
-    const newDb = {
-      activeCharacterId: newChar.id,
-      characters: [...db.characters, newChar],
-    };
-    saveDb(newDb);
+
+    const emptyChar = createEmptyCharacter(name);
+
+    const { data, error } = await supabase
+      .from("characters")
+      .insert({
+        user_id: user.id,
+        name: emptyChar.name,
+        race: emptyChar.race,
+        weapon: emptyChar.weapon,
+        attunements: emptyChar.attunements,
+        completed_tasks: emptyChar.completedTasks,
+        active_modifiers: emptyChar.activeModifiers,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Error creating character:", error);
+      return false;
+    }
+
+    if (data) {
+      const newCharacter: Character = {
+        id: data.id,
+        name: data.name,
+        race: data.race,
+        weapon: data.weapon,
+        attunements: data.attunements ?? [],
+        completedTasks: data.completed_tasks ?? [],
+        activeModifiers: data.active_modifiers ?? [],
+        createdAt: new Date(data.created_at).getTime(),
+      };
+      setCharacters((prev) => [...prev, newCharacter]);
+      saveActiveId(newCharacter.id);
+    }
+
     return true;
   };
 
-  const updateCharacter = (id: string, updates: Partial<Character>) => {
-    const newDb = {
-      ...db,
-      characters: db.characters.map((c) =>
-        c.id === id ? { ...c, ...updates } : c
-      ),
-    };
-    saveDb(newDb);
+  const updateCharacter = async (id: string, updates: Partial<Character>) => {
+    const dbUpdates: Record<string, unknown> = {};
+    if (updates.name !== undefined) dbUpdates.name = updates.name;
+    if (updates.race !== undefined) dbUpdates.race = updates.race;
+    if (updates.weapon !== undefined) dbUpdates.weapon = updates.weapon;
+    if (updates.attunements !== undefined) dbUpdates.attunements = updates.attunements;
+    if (updates.completedTasks !== undefined) dbUpdates.completed_tasks = updates.completedTasks;
+    if (updates.activeModifiers !== undefined) dbUpdates.active_modifiers = updates.activeModifiers;
+
+    const { error } = await supabase
+      .from("characters")
+      .update(dbUpdates)
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error updating character:", error);
+      return;
+    }
+
+    setCharacters((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, ...updates } : c))
+    );
   };
 
-  const deleteCharacter = (id: string) => {
-    const newCharacters = db.characters.filter((c) => c.id !== id);
-    let newActiveId = db.activeCharacterId;
-    
-    if (db.activeCharacterId === id) {
-      newActiveId = newCharacters[0]?.id ?? null;
+  const deleteCharacter = async (id: string) => {
+    const { error } = await supabase
+      .from("characters")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error deleting character:", error);
+      return;
     }
-    
-    const newDb = {
-      activeCharacterId: newActiveId,
-      characters: newCharacters,
-    };
-    saveDb(newDb);
+
+    const remaining = characters.filter((c) => c.id !== id);
+    setCharacters(remaining);
+
+    if (activeCharacterId === id) {
+      saveActiveId(remaining[0]?.id ?? null);
+    }
   };
 
   const setActiveCharacter = (id: string) => {
-    if (!db.characters.find((c) => c.id === id)) return;
-    saveDb({ ...db, activeCharacterId: id });
+    if (!characters.find((c) => c.id === id)) return;
+    saveActiveId(id);
   };
 
   const resetActiveCharacter = () => {
-    saveDb({ ...db, activeCharacterId: null });
+    saveActiveId(null);
   };
 
   return {
-    database: db,
+    database: { activeCharacterId, characters } as CharacterDatabase,
     activeCharacter,
+    loading,
     addCharacter,
     updateCharacter,
     deleteCharacter,
     setActiveCharacter,
     resetActiveCharacter,
-    canAddMore: db.characters.length < MAX_CHARACTERS,
+    canAddMore: characters.length < MAX_CHARACTERS,
   };
 }
 

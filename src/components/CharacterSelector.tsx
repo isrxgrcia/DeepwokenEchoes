@@ -8,7 +8,7 @@ interface CharacterSelectorProps {
   activeCharacter: Character | null;
   onSelect: (id: string) => void;
   onDelete: (id: string) => void;
-  onAddNew: (name: string) => boolean;
+  onAddNew: (name: string) => boolean | Promise<boolean>;
   canAddMore: boolean;
 }
 
@@ -23,8 +23,9 @@ export function CharacterSelector({
   const [newName, setNewName] = useState("");
   const [showAdd, setShowAdd] = useState(false);
 
-  const handleAdd = () => {
-    if (onAddNew(newName)) {
+  const handleAdd = async () => {
+    const result = await onAddNew(newName);
+    if (result) {
       setNewName("");
       setShowAdd(false);
     }

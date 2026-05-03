@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { AuthUI } from "./components/AuthUI";
 import { useCharacterDatabase } from "./hooks/useCharacter";
 import { CharacterBuilder } from "./components/CharacterBuilder";
 import { CharacterSelector } from "./components/CharacterSelector";
@@ -8,10 +10,12 @@ import { WindDisplay } from "./components/WindDisplay";
 
 type View = "list" | "creator" | "tracker";
 
-function App() {
+function MainApp() {
+  const { user, signOut, loading: authLoading } = useAuth();
   const {
     database,
     activeCharacter,
+    loading: charactersLoading,
     addCharacter,
     updateCharacter,
     deleteCharacter,
@@ -21,6 +25,21 @@ function App() {
   } = useCharacterDatabase();
 
   const [view, setView] = useState<View>("list");
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-abyss_dark relative overflow-hidden">
+        <div className="abyss-bg" />
+        <div className="relative z-10 min-h-screen flex items-center justify-center">
+          <div className="text-cyan_wind text-sm tracking-widest">Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <AuthUI />;
+  }
 
   const handleSelectCharacter = (id: string) => {
     setActiveCharacter(id);
@@ -36,10 +55,29 @@ function App() {
     setView(newView);
   };
 
+  if (charactersLoading) {
+    return (
+      <div className="min-h-screen bg-abyss_dark relative overflow-hidden">
+        <div className="abyss-bg" />
+        <div className="relative z-10 min-h-screen flex items-center justify-center">
+          <div className="text-cyan_wind text-sm tracking-widest">Loading characters...</div>
+        </div>
+      </div>
+    );
+  }
+
   if (!activeCharacter) {
     return (
       <div className="min-h-screen bg-abyss_dark relative overflow-hidden">
         <div className="abyss-bg" />
+        <div className="absolute top-4 right-4 z-20">
+          <button
+            onClick={signOut}
+            className="abyss-btn-secondary px-3 py-2 rounded text-xs tracking-widest"
+          >
+            Logout
+          </button>
+        </div>
         <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
           <div className="w-full max-w-md">
             <div className="text-center mb-12">
@@ -71,6 +109,14 @@ function App() {
     return (
       <div className="min-h-screen bg-abyss_dark relative overflow-hidden">
         <div className="abyss-bg" />
+        <div className="absolute top-4 right-4 z-20">
+          <button
+            onClick={signOut}
+            className="abyss-btn-secondary px-3 py-2 rounded text-xs tracking-widest"
+          >
+            Logout
+          </button>
+        </div>
         <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
           <div className="w-full max-w-2xl">
             <div className="text-center mb-8">
@@ -126,12 +172,20 @@ function App() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => navigateTo("creator")}
-              className="abyss-btn-secondary px-4 py-2 rounded text-xs tracking-widest"
-            >
-              Edit
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigateTo("creator")}
+                className="abyss-btn-secondary px-4 py-2 rounded text-xs tracking-widest"
+              >
+                Edit
+              </button>
+              <button
+                onClick={signOut}
+                className="abyss-btn-secondary px-3 py-2 rounded text-xs tracking-widest"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </header>
 
@@ -171,6 +225,14 @@ function App() {
         </main>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
   );
 }
 
