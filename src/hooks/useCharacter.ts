@@ -82,6 +82,10 @@ export function useCharacterDatabase() {
     saveDb({ ...db, activeCharacterId: id });
   };
 
+  const resetActiveCharacter = () => {
+    saveDb({ ...db, activeCharacterId: null });
+  };
+
   return {
     database: db,
     activeCharacter,
@@ -89,6 +93,7 @@ export function useCharacterDatabase() {
     updateCharacter,
     deleteCharacter,
     setActiveCharacter,
+    resetActiveCharacter,
     canAddMore: db.characters.length < MAX_CHARACTERS,
   };
 }

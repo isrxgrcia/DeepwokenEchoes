@@ -17,13 +17,13 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-text_dim text-xs mb-1">Raza</label>
+            <label className="block text-text_dim text-xs mb-2 tracking-wider uppercase">Lineage</label>
             <select
               value={character.race}
               onChange={(e) => updateField("race", e.target.value)}
-              className="w-full bg-bg_card border border-border rounded px-2 py-2 text-sm text-text_main focus:outline-none focus:border-gold"
+              className="abyss-input depth-select w-full rounded px-3 py-2.5 text-sm"
             >
-              <option value="">Raza...</option>
+              <option value="">Choose...</option>
               {RACES.map((r) => (
                 <option key={r} value={r}>{r}</option>
               ))}
@@ -31,13 +31,13 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
           </div>
           
           <div>
-            <label className="block text-text_dim text-xs mb-1">Arma</label>
+            <label className="block text-text_dim text-xs mb-2 tracking-wider uppercase">Armament</label>
             <select
               value={character.weapon}
               onChange={(e) => updateField("weapon", e.target.value)}
-              className="w-full bg-bg_card border border-border rounded px-2 py-2 text-sm text-text_main focus:outline-none focus:border-gold"
+              className="abyss-input depth-select w-full rounded px-3 py-2.5 text-sm"
             >
-              <option value="">Arma...</option>
+              <option value="">Choose...</option>
               {WEAPON_TYPES.map((w) => (
                 <option key={w} value={w}>{w}</option>
               ))}
@@ -46,8 +46,10 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
         </div>
 
         <div>
-          <label className="block text-text_dim text-xs mb-1">Attunements</label>
-          <div className="flex flex-wrap gap-1">
+          <label className="block text-text_dim text-xs mb-2 tracking-wider uppercase">
+            Attunements <span className="text-text_dim/50">(max 2)</span>
+          </label>
+          <div className="flex flex-wrap gap-2">
             {ATTUNEMENTS.map((att) => (
               <button
                 key={att}
@@ -59,10 +61,10 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
                     updateField("attunements", [...current, att]);
                   }
                 }}
-                className={`px-2 py-1 rounded text-xs transition-colors ${
+                className={`px-3 py-1.5 rounded text-xs tracking-wide transition-all ${
                   character.attunements.includes(att)
-                    ? "bg-cyan_wind text-bg_darker font-semibold"
-                    : "bg-bg_card border border-border text-text_main hover:bg-bg_hover"
+                    ? "attunement-selected text-cyan_wind"
+                    : "abyss-card text-text_main hover:border-cyan_wind/30"
                 }`}
               >
                 {att}
@@ -75,15 +77,15 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-text_dim text-sm mb-2">Raza</label>
+    <div className="space-y-8">
+      <div className="space-y-3">
+        <label className="block text-text_dim text-sm tracking-[0.2em] uppercase font-light">Lineage</label>
         <select
           value={character.race}
           onChange={(e) => updateField("race", e.target.value)}
-          className="w-full bg-bg_card border border-border rounded-lg px-4 py-3 text-text_main focus:outline-none focus:border-gold"
+          className="abyss-input depth-select w-full rounded-lg px-4 py-3"
         >
-          <option value="">Seleccionar raza...</option>
+          <option value="">Choose lineage...</option>
           {RACES.map((r) => (
             <option key={r} value={r}>
               {r}
@@ -92,14 +94,14 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
         </select>
       </div>
 
-      <div>
-        <label className="block text-text_dim text-sm mb-2">Arma</label>
+      <div className="space-y-3">
+        <label className="block text-text_dim text-sm tracking-[0.2em] uppercase font-light">Armament</label>
         <select
           value={character.weapon}
           onChange={(e) => updateField("weapon", e.target.value)}
-          className="w-full bg-bg_card border border-border rounded-lg px-4 py-3 text-text_main focus:outline-none focus:border-gold"
+          className="abyss-input depth-select w-full rounded-lg px-4 py-3"
         >
-          <option value="">Seleccionar arma...</option>
+          <option value="">Choose armament...</option>
           {WEAPON_TYPES.map((w) => (
             <option key={w} value={w}>
               {w}
@@ -108,8 +110,10 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
         </select>
       </div>
 
-      <div>
-        <label className="block text-text_dim text-sm mb-2">Attunements (selecciona hasta 2)</label>
+      <div className="space-y-3">
+        <label className="block text-text_dim text-sm tracking-[0.2em] uppercase font-light">
+          Attunements <span className="text-text_dim/50">(max 2)</span>
+        </label>
         <div className="grid grid-cols-2 gap-2">
           {ATTUNEMENTS.map((att) => (
             <button
@@ -122,10 +126,10 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
                   updateField("attunements", [...current, att]);
                 }
               }}
-              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+              className={`px-4 py-3 rounded-lg text-sm tracking-wide transition-all ${
                 character.attunements.includes(att)
-                  ? "bg-cyan_wind text-bg_darker font-semibold"
-                  : "bg-bg_card border border-border text-text_main hover:bg-bg_hover"
+                  ? "attunement-selected text-cyan_wind"
+                  : "abyss-card text-text_main hover:border-cyan_wind/30"
               }`}
             >
               {att}

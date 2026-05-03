@@ -1,5 +1,5 @@
 import { TASKS, TASK_CATEGORIES } from "../constants";
-import type { Character, Task } from "../types";
+import type { Character } from "../types";
 
 interface TaskCheckerProps {
   character: Character;
@@ -14,11 +14,37 @@ export function TaskChecker({ character, onUpdate }: TaskCheckerProps) {
     onUpdate({ completedTasks: newTasks });
   };
 
-  const getTaskColor = (task: Task) => {
-    if (task.color === "blood") return "text-blood border-blood/30";
-    if (task.category === "Endgame") return "text-thunder border-thunder/30";
-    if (task.category === "Special") return "text-shadow border-shadow/30";
-    return "text-text_main border-border";
+  const getCategoryStyle = (category: string) => {
+    switch (category) {
+      case "Blood": 
+        return { 
+          border: "border-l-blood/40", 
+          text: "text-blood", 
+          bg: "bg-blood/5",
+          accent: "bg-blood/20"
+        };
+      case "Endgame": 
+        return { 
+          border: "border-l-thunder/40", 
+          text: "text-thunder", 
+          bg: "bg-thunder/5",
+          accent: "bg-thunder/20"
+        };
+      case "Special": 
+        return { 
+          border: "border-l-shadow/40", 
+          text: "text-shadow", 
+          bg: "bg-shadow/5",
+          accent: "bg-shadow/20"
+        };
+      default: 
+        return { 
+          border: "border-l-iron/30", 
+          text: "text-text_main", 
+          bg: "bg-transparent",
+          accent: "bg-iron/10"
+        };
+    }
   };
 
   return (
@@ -30,23 +56,29 @@ export function TaskChecker({ character, onUpdate }: TaskCheckerProps) {
         const completedCount = categoryTasks.filter((t) =>
           character.completedTasks.includes(t.id)
         ).length;
+        
+        const styles = getCategoryStyle(category);
+        const allCompleted = completedCount === categoryTasks.length;
 
         return (
-          <div key={category} className="border border-border rounded-lg overflow-hidden">
-            <div className="bg-bg_card px-4 py-3 flex justify-between items-center">
-              <h3 className="font-semibold text-text_main">{category}</h3>
-              <span className="text-sm text-text_dim">
-                {completedCount}/{categoryTasks.length}
-              </span>
+          <div key={category} className={`abyss-card rounded-lg overflow-hidden ${styles.border} ${allCompleted ? 'border-cyan_wind/20' : ''}`}>
+            <div className={`${styles.bg} px-5 py-4 flex justify-between items-center`}>
+              <h3 className={`font-serif tracking-wide ${styles.text}`}>{category}</h3>
+              <div className="flex items-center gap-2">
+                <div className={`h-px w-8 ${styles.border}`}></div>
+                <span className={`text-xs font-mono tracking-wider ${styles.text}`}>
+                  {completedCount}<span className="text-text_dim/50">/{categoryTasks.length}</span>
+                </span>
+              </div>
             </div>
-            <div className="p-3 space-y-2 bg-bg_darker">
+            <div className="p-3 space-y-1">
               {categoryTasks.map((task) => (
                 <label
                   key={task.id}
-                  className={`flex items-center justify-between p-2 rounded cursor-pointer transition-colors ${
+                  className={`flex items-center justify-between p-3 rounded cursor-pointer transition-all hover:bg-depth_hover/30 ${
                     character.completedTasks.includes(task.id)
-                      ? "bg-bg_hover"
-                      : "hover:bg-bg_hover/50"
+                      ? styles.accent
+                      : ""
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -54,14 +86,25 @@ export function TaskChecker({ character, onUpdate }: TaskCheckerProps) {
                       type="checkbox"
                       checked={character.completedTasks.includes(task.id)}
                       onChange={() => toggleTask(task.id)}
-                      className="w-4 h-4 accent-gold"
+                      className="sr-only"
                     />
+                    <div className={`w-5 h-5 rounded border transition-all flex items-center justify-center ${
+                      character.completedTasks.includes(task.id)
+                        ? "bg-cyan_wind border-cyan_wind"
+                        : "border-border"
+                    }`}>
+                      {character.completedTasks.includes(task.id) && (
+                        <svg className="w-3 h-3 text-abyss_dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                          <path d="M5 12l5 5L20 7" />
+                        </svg>
+                      )}
+                    </div>
                     <span
-                      className={
+                      className={`text-sm tracking-wide transition-colors ${
                         character.completedTasks.includes(task.id)
                           ? "text-text_dim line-through"
-                          : getTaskColor(task)
-                      }
+                          : "text-text_main"
+                      }`}
                     >
                       {task.name}
                     </span>
@@ -72,7 +115,7 @@ export function TaskChecker({ character, onUpdate }: TaskCheckerProps) {
                         ? "text-blood"
                         : task.category === "Endgame"
                         ? "text-thunder"
-                        : "text-gold"
+                        : "text-cyan_wind"
                     }`}
                   >
                     +{task.value}

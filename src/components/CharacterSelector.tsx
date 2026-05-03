@@ -33,13 +33,13 @@ export function CharacterSelector({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold text-text_main">Mis Personajes</h2>
+        <h2 className="text-sm font-serif text-text_main tracking-widest uppercase">My Characters</h2>
         {canAddMore && (
           <button
             onClick={() => setShowAdd(!showAdd)}
-            className="text-gold hover:text-gold_bright text-sm"
+            className="text-cyan_wind hover:text-gold_bright text-xs tracking-widest transition-colors"
           >
-            + Nuevo
+            + NEW
           </button>
         )}
       </div>
@@ -51,16 +51,16 @@ export function CharacterSelector({
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-            placeholder="Nombre del personaje..."
+            placeholder="Name this vessel..."
             maxLength={20}
-            className="flex-1 bg-bg_card border border-border rounded-lg px-3 py-2 text-text_main focus:outline-none focus:border-gold"
+            className="abyss-input flex-1 rounded-lg px-4 py-3 text-sm"
           />
           <button
             onClick={handleAdd}
             disabled={!newName.trim()}
-            className="bg-gold hover:bg-gold/80 text-bg_darker font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
+            className="abyss-btn px-5 py-3 rounded-lg text-xs tracking-widest disabled:opacity-30"
           >
-            Crear
+            SUMMON
           </button>
         </div>
       )}
@@ -76,23 +76,21 @@ export function CharacterSelector({
             <div
               key={char.id}
               onClick={() => onSelect(char.id)}
-              className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                isActive
-                  ? "bg-gold/20 border border-gold"
-                  : "bg-bg_card border border-border hover:bg-bg_hover"
+              className={`abyss-card rounded-lg p-4 cursor-pointer transition-all hover:border-cyan_wind/30 ${
+                isActive ? "border-cyan_wind/40" : ""
               }`}
             >
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-semibold text-text_main">{char.name}</h3>
-                  <p className="text-xs text-text_dim">
-                    {char.race || "Sin raza"} • {char.weapon || "Sin arma"}
+                  <h3 className="font-serif text-lg text-text_main">{char.name}</h3>
+                  <p className="text-xs text-text_dim mt-1 tracking-wide">
+                    {char.race || "Undrafted"} • {char.weapon || "Unarmed"}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <span
-                    className="text-lg font-bold"
-                    style={{ color: rankColor }}
+                    className="text-2xl font-bold"
+                    style={{ color: rankColor, textShadow: `0 0 15px ${rankColor}40` }}
                   >
                     {rank}
                   </span>
@@ -101,7 +99,7 @@ export function CharacterSelector({
                       e.stopPropagation();
                       onDelete(char.id);
                     }}
-                    className="text-text_dim hover:text-blood text-xs"
+                    className="text-text_dim hover:text-blood text-xs transition-colors"
                   >
                     ✕
                   </button>
@@ -112,8 +110,8 @@ export function CharacterSelector({
         })}
 
         {database.characters.length === 0 && !showAdd && (
-          <p className="text-text_dim text-sm text-center py-4">
-            Crea tu primer personaje
+          <p className="text-text_dim text-sm text-center py-6 tracking-widest font-light">
+            No vessels in these waters
           </p>
         )}
       </div>

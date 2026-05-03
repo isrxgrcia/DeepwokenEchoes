@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# Deepwoken Wind Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para calcular y rastrear tu Wind en el juego **Deepwoken**.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Gestión de Personajes**: Crea hasta 6 personajes distintos
+- **Selección de Raza**: Elige entre múltiples razas del juego
+- **Selección de Arma**: Configura tu arma principal
+- **Attunements**: Selecciona tus afinaciones elementales
+- **Tareas**: Marca las tareas completadas
+- **Modifiers**: Activa/desactiva modificadores de viento
+- **Cálculo de Wind**: Calcula automáticamente tu rango de viento (W, S, A, B, C, D, E)
 
-## React Compiler
+## Cálculo del Wind
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+Total = PuntosBase × (1.0 + Σ(ModifiersActivos))
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Rangos de Wind
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Rango | Puntos mínimos |
+|-------|----------------|
+| W     | 140+           |
+| S     | 112+           |
+| A     | 87+            |
+| B     | 60+            |
+| C     | 30+            |
+| D     | 1+             |
+| E     | 0              |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Tech Stack
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS v4
+- localStorage para persistencia
+
+## Commands
+
+```bash
+npm install    # Instalar dependencias
+npm run dev    # Iniciar servidor de desarrollo (http://localhost:5173)
+npm run build  # Construcción para producción
+npm run lint   # Verificar código con ESLint
+npm run preview # Vista previa de la build
 ```
+
+## Estructura del Proyecto
+
+```
+src/
+├── components/    # Componentes de React
+├── constants/     # Datos del juego (razas, armas, tareas, modifiers)
+├── hooks/         # Hooks personalizados
+├── types/         # Interfaces de TypeScript
+└── App.tsx        # Aplicación principal
+```
+
+## Persistencia
+
+Los datos se almacenan en `localStorage` con la clave `deepwoken_characters`.
+
+---
+*Deepwoken es un juego de [Arken Studios](https://arkengames.co/). Esta aplicación no está afiliada al juego oficial.*

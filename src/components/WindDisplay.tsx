@@ -30,38 +30,37 @@ export function WindDisplay({ character }: WindDisplayProps) {
   const rankColor = RANK_COLORS[rank];
 
   return (
-    <div className="bg-bg_card border border-border rounded-lg p-6">
+    <div className="abyss-card abyss-wind-display rounded-lg p-6">
       <div className="text-center">
-        <div className="text-text_dim text-sm uppercase tracking-wider mb-2">Wind Rank</div>
+        <div className="text-text_dim text-xs tracking-[0.3em] uppercase mb-4 font-light">Depth Rank</div>
         <div
-          className="text-6xl font-bold mb-4"
-          style={{ color: rankColor, textShadow: `0 0 30px ${rankColor}40` }}
+          className="text-7xl font-serif font-bold mb-2"
+          style={{ color: rankColor, textShadow: `0 0 30px ${rankColor}50` }}
         >
           {rank}
         </div>
-        <div className="text-text_dim text-sm mb-6">Total Wind</div>
+        <div className="text-text_dim text-xs tracking-[0.2em] uppercase mb-6 font-light">Total Wind</div>
         <div
-          className="text-5xl font-bold"
-          style={{ color: "#00E5FF", textShadow: "0 0 20px #00E5FF40" }}
+          className="text-5xl font-bold cyan-depth-glow"
         >
           {total}
         </div>
       </div>
 
-      <div className="mt-6 pt-6 border-t border-border space-y-3">
-        <div className="flex justify-between text-sm">
-          <span className="text-text_dim">Base Points</span>
+      <div className="mt-8 pt-6 border-t border-border/30 space-y-4">
+        <div className="flex justify-between items-center">
+          <span className="text-text_dim text-xs tracking-wider uppercase font-light">Base Echoes</span>
           <span className="text-text_main font-mono">{basePoints}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-text_dim">Modifier Bonus</span>
-          <span className="text-gold font-mono">
+        <div className="flex justify-between items-center">
+          <span className="text-text_dim text-xs tracking-wider uppercase font-light">Depth Surge</span>
+          <span className="text-cyan_wind font-mono">
             +{Math.round(modifierSum * 100)}%
           </span>
         </div>
-        <div className="flex justify-between text-sm pt-2 border-t border-border">
-          <span className="text-text_dim">Active Modifiers</span>
-          <span className="text-gold font-mono">{character.activeModifiers.length}</span>
+        <div className="flex justify-between items-center pt-3 border-t border-border/30">
+          <span className="text-text_dim text-xs tracking-wider uppercase font-light">Active Tides</span>
+          <span className="text-cyan_wind font-mono">{character.activeModifiers.length}</span>
         </div>
       </div>
     </div>
