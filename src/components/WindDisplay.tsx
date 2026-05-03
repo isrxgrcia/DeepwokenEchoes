@@ -50,9 +50,9 @@ export function WindDisplay({ character }: WindDisplayProps) {
   }, [rank, total]);
 
   return (
-    <div className="abyss-card abyss-wind-display rounded-xl p-8 relative overflow-hidden group">
-      <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-        <svg className="w-24 h-24 text-cyan_wind" viewBox="0 0 24 24" fill="currentColor">
+    <div className="abyss-card abyss-wind-display rounded-xl p-4 md:p-8 relative overflow-hidden group">
+      <div className="absolute top-0 right-0 p-3 md:p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+        <svg className="w-16 md:w-24 h-16 md:h-24 text-cyan_wind" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2L9 7H3l5 6-2 10 6-8 6 8-2-10 5-6h-6z" />
         </svg>
       </div>
@@ -60,14 +60,14 @@ export function WindDisplay({ character }: WindDisplayProps) {
       <div className="relative z-10 text-center">
         <div className="text-text_dim text-[10px] tracking-[0.4em] uppercase mb-1 font-medium">Current Rank</div>
         <div
-          className="text-8xl font-serif font-bold mb-4 drop-shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all duration-500 hover:scale-110 cursor-default"
+          className="text-5xl md:text-8xl font-serif font-bold mb-2 md:mb-4 drop-shadow-[0_0_15px_rgba(0,0,0,0.5)] transition-all duration-500 hover:scale-110 cursor-default"
           style={{ color: rankColor, textShadow: `0 0 40px ${rankColor}40` }}
         >
           {rank}
         </div>
         
-        <div className="flex flex-col items-center gap-1 mb-8">
-          <div className="text-5xl font-bold tracking-tight text-white cyan-depth-glow">
+        <div className="flex flex-col items-center gap-1 mb-4 md:mb-8">
+          <div className="text-4xl md:text-5xl font-bold tracking-tight text-white cyan-depth-glow">
             {total}
           </div>
           <div className="text-text_dim text-[10px] tracking-[0.3em] uppercase font-light">Total Wind</div>

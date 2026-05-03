@@ -200,40 +200,40 @@ function MainApp() {
     <div className="min-h-screen bg-abyss_dark relative overflow-hidden flex flex-col">
       <div className="abyss-bg" />
       <div className="relative z-10 flex flex-col min-h-screen">
-        <header className={`border-b border-white/5 bg-black/40 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-3' : 'py-5'}`}>
-          <div className="max-w-7xl mx-auto px-8 flex justify-between items-center gap-4">
-            <div className="flex items-center gap-5 group cursor-pointer" onClick={() => { resetActiveCharacter(); navigateTo("list"); }}>
-              <div className="w-10 h-10 rounded-xl bg-cyan_wind/10 flex items-center justify-center border border-cyan_wind/20 group-hover:border-cyan_wind/40 transition-all shadow-[0_0_15px_rgba(0,229,255,0.1)]">
-                <svg className="w-5 h-5 text-cyan_wind" viewBox="0 0 24 24" fill="currentColor">
+        <header className={`border-b border-white/5 bg-black/40 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
+          <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center gap-2 md:gap-4">
+            <div className="flex items-center gap-3 md:gap-5 group cursor-pointer min-w-0" onClick={() => { resetActiveCharacter(); navigateTo("list"); }}>
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-cyan_wind/10 flex items-center justify-center border border-cyan_wind/20 group-hover:border-cyan_wind/40 transition-all shadow-[0_0_15px_rgba(0,229,255,0.1)] shrink-0">
+                <svg className="w-4 h-4 md:w-5 md:h-5 text-cyan_wind" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2L9 7H3l5 6-2 10 6-8 6 8-2-10 5-6h-6z" />
                 </svg>
               </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-3">
-                  <h1 className={`font-serif font-bold text-white tracking-widest uppercase transition-all ${scrolled ? 'text-base' : 'text-xl'}`}>{activeCharacter.name}</h1>
+              <div className="flex flex-col min-w-0">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <h1 className={`font-serif font-bold text-white tracking-widest uppercase transition-all truncate ${scrolled ? 'text-xs md:text-sm' : 'text-sm md:text-xl'}`}>{activeCharacter.name}</h1>
                   {activeCharacter.buildUrl && (
                     <a
                       href={activeCharacter.buildUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text_dim hover:text-cyan_wind transition-colors"
+                      className="text-text_dim hover:text-cyan_wind transition-colors shrink-0"
                       title="View Build Archive"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </a>
                   )}
-                  <div className="px-2 py-0.5 rounded bg-cyan_wind/10 border border-cyan_wind/20 text-[9px] text-cyan_wind tracking-widest font-bold uppercase">Active</div>
+                  <div className="hidden md:block px-2 py-0.5 rounded bg-cyan_wind/10 border border-cyan_wind/20 text-[9px] text-cyan_wind tracking-widest font-bold uppercase shrink-0">Active</div>
                 </div>
-                <p className="text-text_dim text-[10px] tracking-[0.2em] font-bold uppercase mt-0.5">
-                  {activeCharacter.race} <span className="text-white/10 mx-1.5">•</span> {activeCharacter.weapon}
+                <p className="text-text_dim text-[8px] md:text-[10px] tracking-[0.2em] font-bold uppercase mt-0.5 truncate">
+                  {activeCharacter.race || 'Sin raza'} <span className="text-white/10 mx-1">•</span> {activeCharacter.weapon || 'Sin arma'}
                 </p>
               </div>
             </div>
             
-            <nav className="flex items-center gap-4">
-              <div className="max-w-[200px]">
+            <nav className="flex items-center gap-2 md:gap-4 shrink-0">
+              <div className="max-w-[120px] md:max-w-[200px]">
                 <select
                   value={activeCharacter.id}
                   onChange={(e) => {
@@ -247,7 +247,7 @@ function MainApp() {
                       }
                     }
                   }}
-                  className="abyss-input w-full py-2 px-3 rounded-lg text-[10px] tracking-widest uppercase bg-black/40 border border-white/10 text-white focus:border-cyan_wind/50"
+                  className="abyss-input w-full py-1.5 md:py-2 px-2 md:px-3 rounded-lg text-[8px] md:text-[10px] tracking-widest uppercase bg-black/40 border border-white/10 text-white focus:border-cyan_wind/50"
                 >
                   {database.characters.map((char) => (
                     <option key={char.id} value={char.id}>
@@ -266,7 +266,7 @@ function MainApp() {
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto w-full px-8 pt-28 pb-10 flex-1">
+        <main className="max-w-7xl mx-auto w-full px-4 md:px-8 pt-24 md:pt-28 pb-10 flex-1">
           <DashboardView
             character={activeCharacter}
             onUpdate={handleCharacterUpdate}
