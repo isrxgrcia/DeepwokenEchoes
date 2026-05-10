@@ -80,7 +80,7 @@ function MainApp() {
         <div className="relative z-10 text-center">
           <div className="echo-orb mx-auto mb-6 animate-glow" />
           <div className="text-accent text-xs tracking-rune uppercase animate-pulse">
-            Reading the echoes...
+            Cargando tus personajes...
           </div>
         </div>
       </div>
@@ -112,11 +112,11 @@ function MainApp() {
               </div>
               <div className="space-y-2">
                 <h1 className="font-display text-5xl md:text-6xl font-bold text-gold tracking-[0.3em] gold-glow uppercase">
-                  DEPTHS<br />LEDGER
+                  DEEPWOKEN
                 </h1>
                 <div className="flex items-center justify-center gap-4 mt-4">
                   <div className="h-px w-12 bg-gradient-to-r from-transparent to-border" />
-                  <p className="text-muted tracking-[0.4em] text-[10px] uppercase font-medium">Echoes of the Abyss</p>
+                  <p className="text-muted tracking-[0.4em] text-[10px] uppercase font-medium">Las Depths te recuerdan</p>
                   <div className="h-px w-12 bg-gradient-to-l from-transparent to-border" />
                 </div>
               </div>
@@ -136,7 +136,7 @@ function MainApp() {
         </div>
         
         <footer className="relative z-10 py-8 text-center">
-          <p className="heading-rune opacity-40">— May the tides guide your path —</p>
+          <p className="heading-rune opacity-40">— Que las depths escojan tu camino —</p>
         </footer>
       </div>
     );
@@ -284,7 +284,6 @@ function MainApp() {
           <DashboardView
             character={activeCharacter}
             onUpdate={handleCharacterUpdate}
-            navigateToCreator={() => navigateTo("creator")}
           />
         </main>
         <footer className="py-10 border-t border-rune text-center mt-auto">

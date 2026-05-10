@@ -35,8 +35,8 @@ export function CharacterSelector({
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div className="flex flex-col gap-0.5">
-          <h2 className="text-[11px] font-display text-foreground tracking-rune uppercase font-semibold">The Great Library</h2>
-          <p className="text-muted text-[10px] tracking-wide">Active Vessels</p>
+          <h2 className="text-[11px] font-display text-foreground tracking-rune uppercase font-semibold">Personajes destinados a morir</h2>
+          <p className="text-muted text-[10px] tracking-wide">Personajes Vivos</p>
         </div>
         {canAddMore && (
           <button
@@ -46,7 +46,7 @@ export function CharacterSelector({
                 ? "bg-accent/10 border-accent text-accent" 
                 : "border-rune text-muted hover:border-[oklch(0.78_0.13_78/0.4)] hover:text-foreground"
             }`}
-            title="Create New Vessel"
+            title="Crear nuevo personaje"
           >
             <svg className={`w-4 h-4 transition-transform duration-300 ${showAdd ? "rotate-45" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />

@@ -63,10 +63,10 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
     return (
       <div className="space-y-6">
         <div className="space-y-2">
-          <label className={labelClasses}>Build Archive (URL)</label>
+          <label className={labelClasses}>Build (URL)</label>
           <div className="flex gap-2">
             <input
-              type="url"
+              type="text"
               value={character.buildUrl || ""}
               onChange={(e) => updateField("buildUrl", e.target.value)}
               placeholder="https://deepwoken.co/builder..."
@@ -84,7 +84,7 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className={labelClasses}>Lineage</label>
+            <label className={labelClasses}>Raza</label>
             <select
               value={character.race}
               onChange={(e) => updateField("race", e.target.value)}
@@ -98,7 +98,7 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
           </div>
           
           <div>
-            <label className={labelClasses}>Armament</label>
+            <label className={labelClasses}>Arma</label>
             <select
               value={character.weapon}
               onChange={(e) => updateField("weapon", e.target.value)}
@@ -149,7 +149,7 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
         <label className={labelClasses}>Build Archive (URL)</label>
         <div className="flex gap-3">
           <input
-            type="url"
+            type="text"
             value={character.buildUrl || ""}
             onChange={(e) => updateField("buildUrl", e.target.value)}
             placeholder="https://deepwoken.co/builder/..."
@@ -168,13 +168,13 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-3">
-          <label className={labelClasses}>Lineage</label>
+          <label className={labelClasses}>Raza</label>
           <select
             value={character.race}
             onChange={(e) => updateField("race", e.target.value)}
             className={`${inputClasses} py-4`}
           >
-            <option value="">Choose lineage...</option>
+            <option value="">Escoge una raza...</option>
             {RACES.map((r) => (
               <option key={r} value={r}>
                 {r}
@@ -184,13 +184,13 @@ export function CharacterBuilder({ character, onUpdate, compact = false }: Chara
         </div>
 
         <div className="space-y-3">
-          <label className={labelClasses}>Armament</label>
+          <label className={labelClasses}>Arma</label>
           <select
             value={character.weapon}
             onChange={(e) => updateField("weapon", e.target.value)}
             className={`${inputClasses} py-4`}
           >
-            <option value="">Choose armament...</option>
+            <option value="">Escoge un arma...</option>
             {WEAPON_TYPES.map((w) => (
               <option key={w} value={w}>
                 {w}

@@ -58,14 +58,14 @@ export function AuthUI() {
             <div className="absolute inset-0 bg-accent/10 blur-2xl rounded-full" />
           </div>
           <h1 className="font-display text-4xl md:text-5xl font-bold text-gold tracking-[0.3em] gold-glow uppercase">
-            DEPTHS<br />LEDGER
+            DEEPWOKEN
           </h1>
-          <p className="text-muted mt-4 tracking-[0.4em] text-xs uppercase font-medium">Wind Tracker</p>
+          <p className="text-muted mt-4 tracking-[0.4em] text-xs uppercase font-medium">Las Depths te esperan</p>
         </div>
 
         <div className="panel p-8">
           <h2 className="font-display text-center text-foreground tracking-rune uppercase mb-6 text-sm">
-            {isRegister ? "Inscribe your seal" : "Enter the Abyss"}
+            {isRegister ? "Inscribe your seal" : "Baja a las Depths"}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -118,7 +118,7 @@ export function AuthUI() {
               disabled={loading}
               className="grimoire-btn w-full py-4 rounded text-xs font-semibold disabled:opacity-50"
             >
-              {loading ? "Loading..." : isRegister ? "Inscribe" : "Descend"}
+              {loading ? "Loading..." : isRegister ? "Inscribe" : "Descender"}
             </button>
           </form>
 
@@ -131,7 +131,7 @@ export function AuthUI() {
               }}
               className="text-muted text-sm hover:text-gold transition-colors"
             >
-              {isRegister ? "Already inscribed? Enter the Abyss" : "New soul? Inscribe your seal"}
+              {isRegister ? "Already inscribed? Enter the Abyss" : "Freshie? Registra tu alma "}
             </button>
           </div>
         </div>

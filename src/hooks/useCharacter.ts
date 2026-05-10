@@ -12,9 +12,11 @@ const createEmptyCharacter = (name: string): Omit<Character, "id" | "createdAt">
   name: name.trim(),
   race: "",
   weapon: "",
+  buildUrl: "",
   attunements: [],
   completedTasks: [],
   activeModifiers: [],
+  lastView: "inicio",
 });
 
 export function useCharacterDatabase() {
@@ -57,9 +59,11 @@ export function useCharacterDatabase() {
               name: row.name,
               race: row.race,
               weapon: row.weapon,
+              buildUrl: row.build_url ?? "",
               attunements: row.attunements ?? [],
               completedTasks: row.completed_tasks ?? [],
               activeModifiers: row.active_modifiers ?? [],
+              lastView: row.last_view ?? "inicio",
               createdAt: new Date(row.created_at).getTime(),
             }))
           );
@@ -93,9 +97,11 @@ export function useCharacterDatabase() {
         name: emptyChar.name,
         race: emptyChar.race,
         weapon: emptyChar.weapon,
+        build_url: emptyChar.buildUrl,
         attunements: emptyChar.attunements,
         completed_tasks: emptyChar.completedTasks,
         active_modifiers: emptyChar.activeModifiers,
+        last_view: emptyChar.lastView,
       })
       .select()
       .single();
@@ -111,9 +117,11 @@ export function useCharacterDatabase() {
         name: data.name,
         race: data.race,
         weapon: data.weapon,
+        buildUrl: data.build_url,
         attunements: data.attunements ?? [],
         completedTasks: data.completed_tasks ?? [],
         activeModifiers: data.active_modifiers ?? [],
+        lastView: data.last_view ?? "inicio",
         createdAt: new Date(data.created_at).getTime(),
       };
       setCharacters((prev) => [...prev, newCharacter]);
@@ -128,9 +136,11 @@ export function useCharacterDatabase() {
     if (updates.name !== undefined) dbUpdates.name = updates.name;
     if (updates.race !== undefined) dbUpdates.race = updates.race;
     if (updates.weapon !== undefined) dbUpdates.weapon = updates.weapon;
+    if (updates.buildUrl !== undefined) dbUpdates.build_url = updates.buildUrl;
     if (updates.attunements !== undefined) dbUpdates.attunements = updates.attunements;
     if (updates.completedTasks !== undefined) dbUpdates.completed_tasks = updates.completedTasks;
     if (updates.activeModifiers !== undefined) dbUpdates.active_modifiers = updates.activeModifiers;
+    if (updates.lastView !== undefined) dbUpdates.last_view = updates.lastView;
 
     const { error } = await supabase
       .from("characters")

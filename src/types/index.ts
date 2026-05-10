@@ -26,6 +26,7 @@ export interface Character {
   completedTasks: string[];
   activeModifiers: string[];
   createdAt: number;
+  lastView?: DashboardSubView;
 }
 
 export interface CharacterDatabase {
@@ -58,4 +59,4 @@ export type TaskCategory =
   | "Bosses"
   | "Endgame";
 
-export type DashboardSubView = 'inicio' | 'overview' | 'build' | 'abilities';
+export type DashboardSubView = 'inicio' | 'overview' | 'build';
