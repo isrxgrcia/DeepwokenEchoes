@@ -17,42 +17,39 @@ export function TaskChecker({ character, onUpdate }: TaskCheckerProps) {
   const getCategoryStyle = (category: string) => {
     switch (category) {
       case "Blood": 
+      case "Bosses": 
         return { 
-          border: "border-l-blood/40", 
-          text: "text-blood", 
-          bg: "bg-blood/5",
-          accent: "bg-blood/10",
-          glow: "group-hover:border-blood/30"
+          border: "border-l-[oklch(0.42_0.18_25)/0.5]", 
+          text: "text-[oklch(0.42_0.18_25)]", 
+          bg: "bg-[oklch(0.42_0.18_25)/0.05]",
+          accent: "bg-[oklch(0.42_0.18_25)/0.1]",
         };
       case "Endgame": 
         return { 
-          border: "border-l-thunder/40", 
-          text: "text-thunder", 
-          bg: "bg-thunder/5",
-          accent: "bg-thunder/10",
-          glow: "group-hover:border-thunder/30"
+          border: "border-l-[oklch(0.82_0.18_85)/0.5]", 
+          text: "text-[oklch(0.82_0.18_85)]", 
+          bg: "bg-[oklch(0.82_0.18_85)/0.05]",
+          accent: "bg-[oklch(0.82_0.18_85)/0.1]",
         };
       case "Special": 
         return { 
-          border: "border-l-shadow/40", 
-          text: "text-shadow", 
-          bg: "bg-shadow/5",
-          accent: "bg-shadow/10",
-          glow: "group-hover:border-shadow/30"
+          border: "border-l-[oklch(0.45_0.20_285)/0.5]", 
+          text: "text-[oklch(0.45_0.20_285)]", 
+          bg: "bg-[oklch(0.45_0.20_285)/0.05]",
+          accent: "bg-[oklch(0.45_0.20_285)/0.1]",
         };
       default: 
         return { 
-          border: "border-l-cyan_wind/30", 
-          text: "text-cyan_wind", 
-          bg: "bg-cyan_wind/5",
-          accent: "bg-cyan_wind/10",
-          glow: "group-hover:border-cyan_wind/30"
+          border: "border-l-[oklch(0.55_0.13_215)/0.4]", 
+          text: "text-accent", 
+          bg: "bg-[oklch(0.55 0.13 215 / 0.05)]",
+          accent: "bg-[oklch(0.55 0.13 215 / 0.1)]",
         };
     }
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {TASK_CATEGORIES.map((category) => {
         const categoryTasks = TASKS.filter((t) => t.category === category);
         if (categoryTasks.length === 0) return null;
@@ -65,18 +62,24 @@ export function TaskChecker({ character, onUpdate }: TaskCheckerProps) {
         const allCompleted = completedCount === categoryTasks.length;
 
         return (
-          <div key={category} className={`abyss-card rounded-xl overflow-hidden group ${styles.border} ${allCompleted ? 'border-opacity-100 shadow-[0_0_20px_rgba(0,229,255,0.05)]' : ''}`}>
-            <div className={`${styles.bg} px-6 py-4 flex justify-between items-center border-b border-white/5`}>
+          <div 
+            key={category} 
+            className={`panel overflow-hidden ${styles.border} ${allCompleted ? 'shadow-lg' : ''}`}
+            style={{ borderLeftWidth: '2px' }}
+          >
+            <div className={`${styles.bg} px-5 py-4 flex justify-between items-center`}>
               <div className="flex flex-col">
-                <h3 className={`font-serif tracking-widest text-sm uppercase ${styles.text}`}>{category}</h3>
-                <span className="text-[10px] text-text_dim tracking-tight font-medium">Echoes of the past</span>
+                <h3 className={`font-display tracking-rune text-xs uppercase ${styles.text}`}>
+                  {category}
+                </h3>
+                <span className="text-muted text-[9px] tracking-wide uppercase font-medium">Echoes of the past</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className={`text-xs font-mono font-bold ${allCompleted ? 'text-cyan_wind' : 'text-text_dim'}`}>
-                  {completedCount}<span className="text-text_dim/30 mx-1">/</span>{categoryTasks.length}
+                <span className={`font-mono text-xs tabular-nums font-semibold ${allCompleted ? 'text-gold' : 'text-muted'}`}>
+                  {completedCount}<span className="opacity-30 mx-1">/</span>{categoryTasks.length}
                 </span>
                 {allCompleted && (
-                  <div className="w-2 h-2 rounded-full bg-cyan_wind cyan-depth-glow"></div>
+                  <div className="echo-orb w-2 h-2 animate-glow" />
                 )}
               </div>
             </div>
@@ -86,26 +89,29 @@ export function TaskChecker({ character, onUpdate }: TaskCheckerProps) {
                 return (
                   <label
                     key={task.id}
-                    className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-all duration-300 group/item ${
+                    className={`flex items-center justify-between p-3 rounded cursor-pointer transition-all duration-300 ${
                       isChecked
                         ? styles.accent
-                        : "hover:bg-white/5"
+                        : "hover:bg-[oklch(0.16_0.025_220/0.5)]"
                     }`}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => toggleTask(task.id)}
                         className="sr-only"
                       />
-                      <div className={`w-5 h-5 rounded-md border transition-all flex items-center justify-center shrink-0 ${
-                        isChecked
-                          ? "bg-cyan_wind border-cyan_wind shadow-[0_0_10px_rgba(0,229,255,0.3)]"
-                          : "border-white/10 group-hover/item:border-white/20"
-                      }`}>
+                      <div 
+                        className={`w-5 h-5 rounded flex items-center justify-center shrink-0 transition-all ${
+                          isChecked
+                            ? "bg-accent border border-accent"
+                            : "border border-rune"
+                        }`}
+                        style={isChecked ? { boxShadow: '0 0 10px oklch(0.55 0.13 215 / 0.3)' } : {}}
+                      >
                         {isChecked && (
-                          <svg className="w-3.5 h-3.5 text-abyss_dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="w-3 h-3 text-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
                         )}
@@ -113,27 +119,25 @@ export function TaskChecker({ character, onUpdate }: TaskCheckerProps) {
                       <span
                         className={`text-sm tracking-wide transition-all duration-300 ${
                           isChecked
-                            ? "text-text_dim/60 line-through italic"
-                            : "text-text_main"
+                            ? "text-muted line-through italic"
+                            : "text-foreground"
                         }`}
                       >
                         {task.name}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-[11px] font-mono font-semibold transition-colors ${
-                          isChecked ? "text-text_dim/40" : 
-                          task.color === "blood"
-                            ? "text-blood"
-                            : task.category === "Endgame"
-                            ? "text-thunder"
-                            : "text-cyan_wind"
-                        }`}
-                      >
-                        +{task.value}
-                      </span>
-                    </div>
+                    <span
+                      className={`text-[11px] font-mono tabular-nums font-semibold transition-colors ml-2 ${
+                        isChecked ? "opacity-40" : 
+                        task.color === "blood" || task.category === "Bosses"
+                          ? "text-[oklch(0.42_0.18_25)]"
+                          : task.category === "Endgame"
+                          ? "text-[oklch(0.82_0.18_85)]"
+                          : "text-accent"
+                      }`}
+                    >
+                      +{task.value}
+                    </span>
                   </label>
                 );
               })}

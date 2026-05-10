@@ -15,60 +15,59 @@ export function ModifierToggle({ character, onUpdate }: ModifierToggleProps) {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-3">
-          <h3 className="text-xl font-serif text-text_main tracking-widest uppercase text-sm">Depth Modifiers</h3>
-          <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
-        </div>
-        <p className="text-[10px] text-text_dim tracking-[0.2em] uppercase font-medium">Channel the depths' power to surge your wind</p>
-      </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {MODIFIERS.map((mod, index) => {
-          const isActive = character.activeModifiers.includes(mod.id);
-          return (
-            <button
-              key={mod.id}
-              onClick={() => toggleModifier(mod.id)}
-              className={`abyss-card group rounded-xl px-6 py-5 transition-all duration-300 text-left relative overflow-hidden ${
-                isActive 
-                  ? "modifier-active border-cyan_wind/40 ring-1 ring-cyan_wind/20" 
-                  : "hover:bg-white/5 border-white/5"
-              }`}
-              style={{ animationDelay: `${index * 40}ms` }}
-            >
-              {isActive && (
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan_wind to-transparent opacity-50"></div>
-              )}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {MODIFIERS.map((mod, index) => {
+        const isActive = character.activeModifiers.includes(mod.id);
+        return (
+          <button
+            key={mod.id}
+            onClick={() => toggleModifier(mod.id)}
+            className={`panel group text-left relative transition-all duration-300 ${
+              isActive 
+                ? "border border-rune shadow-lg" 
+                : "hover:border-[oklch(0.78_0.13_78/0.3)]"
+            }`}
+            style={{ animationDelay: `${index * 40}ms` }}
+          >
+            {isActive && (
+              <div 
+                className="absolute top-0 left-0 w-full h-0.5"
+                style={{ 
+                  background: 'linear-gradient(90deg, transparent, oklch(0.80 0.14 80), transparent)',
+                  opacity: 0.5
+                }}
+              />
+            )}
+            
+            <div className="p-4 flex items-start gap-4">
+              <div 
+                className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                  isActive 
+                    ? "bg-accent/20 text-accent" 
+                    : "bg-[oklch(0.11_0.03_225/0.5)] text-muted group-hover:text-foreground"
+                }`}
+              >
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
               
-              <div className="flex flex-col gap-3 relative z-10">
-                <div className="flex items-center justify-between">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                    isActive ? "bg-cyan_wind/20 text-cyan_wind" : "bg-white/5 text-text_dim group-hover:text-text_main"
-                  }`}>
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                    </svg>
-                  </div>
-                  <span className={`font-mono text-xs font-bold transition-all ${
-                    isActive ? "text-cyan_wind" : "text-text_dim"
-                  }`}>
-                    +{Math.round(mod.multiplier * 100)}%
-                  </span>
+              <div className="flex-1 min-w-0">
+                <div 
+                  className={`font-display text-sm tracking-rune transition-colors ${
+                    isActive ? "text-gold" : "text-foreground"
+                  }`}
+                >
+                  {mod.name}
                 </div>
-                
-                <div>
-                  <div className={`font-serif text-sm tracking-widest transition-colors ${isActive ? "text-cyan_wind" : "text-text_main"}`}>
-                    {mod.name}
-                  </div>
-                  <div className="text-[10px] text-text_dim mt-1 line-clamp-1 font-medium">Surge multiplier</div>
+                <div className="text-muted text-[10px] mt-1 font-medium uppercase tracking-wide">
+                  Surge +{Math.round(mod.multiplier * 100)}%
                 </div>
               </div>
-            </button>
-          );
-        })}
-      </div>
+            </div>
+          </button>
+        );
+      })}
     </div>
   );
 }

@@ -4,11 +4,12 @@ import { WindDisplay } from './WindDisplay';
 import { TaskChecker } from './TaskChecker';
 import { ModifierToggle } from './ModifierToggle';
 import { CharacterBuilder } from './CharacterBuilder';
+import { SectionHeader } from './Panel';
 
 import { calculateWind, getRank } from '../hooks/useCharacter';
 import { RANK_COLORS } from '../constants';
 
-type DashboardSubView = 'inicio' | 'overview' | 'build' | 'abilities';
+type DashboardSubView = 'inicio' | 'overview' | 'build';
 
 interface DashboardViewProps {
   character: Character;
@@ -28,14 +29,17 @@ export function DashboardView({
   const rankColor = RANK_COLORS[rank];
 
   const navItemClasses = (current: DashboardSubView) => `
-    px-3 md:px-5 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-serif tracking-widest uppercase transition-all
-    ${subView === current ? 'bg-cyan_wind/20 text-cyan_wind border border-cyan_wind/40 shadow-[0_0_15px_rgba(0,229,255,0.1)]' : 'text-text_dim hover:text-white hover:bg-white/5'}
+    px-4 md:px-6 py-2 rounded text-[10px] md:text-xs font-display tracking-rune uppercase transition-all
+    ${subView === current 
+      ? 'border border-rune text-gold' 
+      : 'text-muted hover:text-foreground hover:border border-transparent'
+    }
   `;
 
   return (
     <div className="flex flex-col min-h-full">
-      <nav className="mb-6 md:mb-8 border-b border-white/5 pb-4 overflow-x-auto">
-        <div className="flex gap-2 md:gap-4 justify-center">
+      <nav className="mb-6 md:mb-8 border-b border-rune pb-4 overflow-x-auto">
+        <div className="flex gap-2 md:gap-3 justify-center">
           <button onClick={() => setSubView('inicio')} className={navItemClasses('inicio')}>
             Inicio
           </button>
@@ -50,82 +54,89 @@ export function DashboardView({
 
       <div className="flex-1">
         {subView === 'inicio' && (
-          <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
-            <div className="abyss-card rounded-2xl p-6 md:p-8 border-white/5 bg-black/20 backdrop-blur-lg">
-              <div className="text-center space-y-3 md:space-y-4">
-                <h2 className="text-2xl md:text-4xl font-serif font-bold text-white tracking-[0.2em]">
+          <div className="max-w-3xl mx-auto space-y-6 md:space-y-8">
+            <div className="panel text-center">
+              <div className="space-y-3">
+                <h2 className="font-display text-xl md:text-2xl font-bold text-foreground tracking-[0.2em] uppercase">
                   {character.name || 'Sin nombre'}
                 </h2>
                 <div 
-                  className="text-5xl md:text-7xl font-serif font-bold drop-shadow-[0_0_20px_rgba(0,0,0,0.5)]"
-                  style={{ color: rankColor, textShadow: `0 0 40px ${rankColor}40` }}
+                  className="text-5xl md:text-7xl font-display font-bold"
+                  style={{ 
+                    color: rankColor, 
+                    textShadow: `0 0 40px ${rankColor}40` 
+                  }}
                 >
                   {rank}
                 </div>
-                <div className="text-text_dim text-[10px] tracking-[0.3em] uppercase">
+                <div className="text-muted text-[10px] tracking-rune uppercase">
                   Rango de Echoes • {windTotal} pts
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="abyss-card rounded-xl p-4 md:p-6 border-white/5 bg-black/20">
-                <div className="text-text_dim text-[10px] tracking-[0.3em] uppercase mb-2 md:mb-3">Lineage</div>
-                <div className="text-white text-base md:text-lg font-serif tracking-wider">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="panel">
+                <div className="text-muted text-[10px] tracking-rune uppercase mb-2">Lineage</div>
+                <div className="text-foreground text-sm md:text-base font-display tracking-wider">
                   {character.race || 'No seleccionado'}
                 </div>
               </div>
 
-              <div className="abyss-card rounded-xl p-4 md:p-6 border-white/5 bg-black/20">
-                <div className="text-text_dim text-[10px] tracking-[0.3em] uppercase mb-2 md:mb-3">Armament</div>
-                <div className="text-white text-base md:text-lg font-serif tracking-wider">
+              <div className="panel">
+                <div className="text-muted text-[10px] tracking-rune uppercase mb-2">Armament</div>
+                <div className="text-foreground text-sm md:text-base font-display tracking-wider">
                   {character.weapon || 'No seleccionado'}
                 </div>
               </div>
             </div>
 
-            <div className="abyss-card rounded-xl p-4 md:p-6 border-white/5 bg-black/20">
-              <div className="text-text_dim text-[10px] tracking-[0.3em] uppercase mb-3 md:mb-4">Attunements</div>
+            <div className="panel">
+              <div className="text-muted text-[10px] tracking-rune uppercase mb-3">Attunements</div>
               {character.attunements.length > 0 ? (
-                <div className="flex flex-wrap gap-2 md:gap-3">
+                <div className="flex flex-wrap gap-2">
                   {character.attunements.map((att) => (
                     <span 
                       key={att}
-                      className="px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-cyan_wind/10 border border-cyan_wind/30 text-cyan_wind text-xs md:text-sm tracking-widest uppercase"
+                      className="px-3 py-1.5 rounded text-[10px] tracking-rune uppercase font-medium border"
+                      style={{ 
+                        backgroundColor: 'oklch(0.55 0.13 215 / 0.1)',
+                        borderColor: 'oklch(0.55 0.13 215 / 0.3)',
+                        color: 'oklch(0.55 0.13 215)'
+                      }}
                     >
                       {att}
                     </span>
                   ))}
                 </div>
               ) : (
-                <div className="text-text_dim text-sm">No seleccionados</div>
+                <div className="text-muted text-sm">No seleccionados</div>
               )}
             </div>
           </div>
         )}
 
         {subView === 'overview' && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
-            <aside className="lg:col-span-4 xl:col-span-3 space-y-6 md:space-y-8 h-fit lg:sticky lg:top-32">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+            <aside className="lg:col-span-4 xl:col-span-3 space-y-6 h-fit lg:sticky lg:top-24">
               <WindDisplay character={character} />
             </aside>
 
-            <div className="lg:col-span-8 xl:col-span-9 space-y-8 md:space-y-12">
-              <section className="space-y-4 md:space-y-6">
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-3">
-                    <h2 className="text-lg md:text-xl font-serif text-white tracking-[0.3em] uppercase text-sm font-bold">Echoes of Progression</h2>
-                    <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
-                  </div>
-                  <p className="text-[10px] text-text_dim tracking-[0.2em] uppercase font-medium">Record your triumphs across the vast sea</p>
-                </div>
+            <div className="lg:col-span-8 xl:col-span-9 space-y-8">
+              <section className="panel">
+                <SectionHeader 
+                  title="Progression of Echoes" 
+                />
                 <TaskChecker
                   character={character}
                   onUpdate={onUpdate}
                 />
               </section>
 
-              <section className="pt-6 md:pt-8 border-t border-white/5">
+              <section className="panel">
+                <SectionHeader 
+                  title="Depth Modifiers" 
+                />
                 <ModifierToggle
                   character={character}
                   onUpdate={onUpdate}
@@ -136,62 +147,42 @@ export function DashboardView({
         )}
 
         {subView === 'build' && (
-          <div className="w-full max-w-3xl mx-auto space-y-6 md:space-y-8">
-            <div className="abyss-card rounded-2xl p-4 md:p-8 border-white/5 bg-black/40 backdrop-blur-xl">
-                <div className="flex flex-col gap-1 mb-4 md:mb-6">
-                    <div className="flex items-center gap-3">
-                        <h2 className="text-lg md:text-xl font-serif text-white tracking-[0.3em] uppercase text-sm font-bold">Vessel Blueprint</h2>
-                        <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
-                    </div>
-                    <p className="text-[10px] text-text_dim tracking-[0.2em] uppercase font-medium">Review and refine your character's core design</p>
-                </div>
-                <CharacterBuilder
-                    character={character}
-                    onUpdate={onUpdate}
-                />
-                <div className="mt-8 pt-6 border-t border-white/5">
-                    <h3 className="text-lg font-serif text-white tracking-widest uppercase mb-4 text-sm">Build Archive</h3>
-                    {character.buildUrl ? (
-                        <a 
-                            href={character.buildUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="abyss-btn px-6 py-3 rounded-lg text-xs tracking-widest flex items-center justify-center gap-2 group"
-                        >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                            <span>View External Build</span>
-                            <span className="text-[9px] text-white/50 group-hover:text-white/80 transition-colors">({new URL(character.buildUrl).hostname})</span>
-                        </a>
-                    ) : (
-                        <button 
-                            onClick={navigateToCreator}
-                            className="abyss-btn-secondary px-6 py-3 rounded-lg text-xs tracking-widest w-full"
-                        >
-                            Add Build URL in Creator
-                        </button>
-                    )}
-                </div>
-            </div>
-          </div>
-        )}
-
-        {subView === 'abilities' && (
-          <div className="w-full max-w-3xl mx-auto space-y-8">
-            <div className="abyss-card rounded-2xl p-8 border-white/5 bg-black/40 backdrop-blur-xl">
-              <div className="flex flex-col gap-1 mb-6">
-                <div className="flex items-center gap-3">
-                  <h2 className="text-xl font-serif text-white tracking-[0.3em] uppercase text-sm font-bold">Manifested Talents</h2>
-                  <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
-                </div>
-                <p className="text-[10px] text-text_dim tracking-[0.2em] uppercase font-medium">Unleash the arcane powers bound to your soul</p>
+          <div className="w-full max-w-2xl mx-auto space-y-6">
+            <div className="panel">
+              <SectionHeader 
+                title="Vessel Blueprint" 
+                subtitle="Review and refine your character's core design"
+              />
+              <CharacterBuilder
+                character={character}
+                onUpdate={onUpdate}
+              />
+              <div className="mt-8 pt-6 border-t border-rune">
+                <h3 className="heading-rune mb-4">Build Archive</h3>
+                {character.buildUrl ? (
+                  <a 
+                    href={character.buildUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="grimoire-btn px-6 py-3 text-xs flex items-center justify-center gap-2 group"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    <span>View External Build</span>
+                    <span className="text-[9px] opacity-50 group-hover:opacity-80 transition-opacity">
+                      ({new URL(character.buildUrl).hostname})
+                    </span>
+                  </a>
+                ) : (
+                  <button 
+                    onClick={navigateToCreator}
+                    className="grimoire-btn-secondary px-6 py-3 text-xs w-full"
+                  >
+                    Add Build URL in Creator
+                  </button>
+                )}
               </div>
-              <p className="text-text_dim text-sm">
-                This section will display detailed information about your character's abilities, mantras, and talents.
-                It's currently under development, but will provide in-depth analysis of your chosen path.
-              </p>
-              {/* Future: Add Ability/Mantra display components here */}
             </div>
           </div>
         )}

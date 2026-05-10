@@ -37,11 +37,13 @@ function MainApp() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-abyss_dark relative overflow-hidden">
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'oklch(0.11 0.03 225)' }}>
         <div className="abyss-bg" />
-        <div className="relative z-10 min-h-screen flex flex-col items-center justify-center">
-          <div className="w-16 h-16 border-2 border-cyan_wind/20 border-t-cyan_wind rounded-full animate-spin mb-4"></div>
-          <div className="text-cyan_wind text-xs tracking-[0.4em] uppercase font-bold animate-pulse">Piercing the veil...</div>
+        <div className="relative z-10 text-center">
+          <div className="echo-orb mx-auto mb-6 animate-glow" />
+          <div className="text-accent text-xs tracking-rune uppercase animate-pulse">
+            Piercing the veil...
+          </div>
         </div>
       </div>
     );
@@ -73,23 +75,26 @@ function MainApp() {
 
   if (charactersLoading) {
     return (
-      <div className="min-h-screen bg-abyss_dark relative overflow-hidden">
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'oklch(0.11 0.03 225)' }}>
         <div className="abyss-bg" />
-        <div className="relative z-10 min-h-screen flex flex-col items-center justify-center">
-          <div className="w-16 h-16 border-2 border-cyan_wind/20 border-t-cyan_wind rounded-full animate-spin mb-4"></div>
-          <div className="text-cyan_wind text-xs tracking-[0.4em] uppercase font-bold animate-pulse">Reading the echoes...</div>
+        <div className="relative z-10 text-center">
+          <div className="echo-orb mx-auto mb-6 animate-glow" />
+          <div className="text-accent text-xs tracking-rune uppercase animate-pulse">
+            Reading the echoes...
+          </div>
         </div>
       </div>
     );
   }
+
   if (!activeCharacter) {
     return (
-      <div className="min-h-screen bg-abyss_dark relative overflow-hidden flex flex-col">
+      <div className="min-h-screen relative overflow-hidden flex flex-col" style={{ backgroundColor: 'oklch(0.11 0.03 225)' }}>
         <div className="abyss-bg" />
         <div className="absolute top-6 right-6 z-20">
           <button
             onClick={signOut}
-            className="abyss-btn-secondary px-5 py-2.5 rounded-xl text-[10px] tracking-[0.2em] uppercase font-bold group flex items-center gap-2"
+            className="grimoire-btn-secondary px-5 py-2.5 text-[10px] tracking-rune uppercase font-semibold group flex items-center gap-2"
           >
             <span>Log out</span>
             <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,22 +107,22 @@ function MainApp() {
           <div className="w-full max-w-xl">
             <div className="text-center mb-16 space-y-4">
               <div className="inline-block relative group">
-                <div className="absolute inset-0 bg-cyan_wind/20 blur-3xl rounded-full scale-150 group-hover:scale-200 transition-transform duration-1000"></div>
-                <svg className="w-24 h-24 mx-auto text-cyan_wind cyan-depth-glow relative z-10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L9 7H3l5 6-2 10 6-8 6 8-2-10 5-6h-6z" />
-                </svg>
+                <div className="echo-orb mx-auto w-20 h-20 animate-glow" />
+                <div className="absolute inset-0 bg-accent/10 blur-3xl rounded-full scale-150 group-hover:scale-200 transition-transform duration-1000" />
               </div>
               <div className="space-y-2">
-                <h1 className="text-7xl font-serif font-bold text-white tracking-[0.5em] drop-shadow-2xl translate-x-[0.25em]">DEEPWOKEN</h1>
-                <div className="flex items-center justify-center gap-4">
-                  <div className="h-px w-12 bg-gradient-to-r from-transparent to-text_dim/30"></div>
-                  <p className="text-text_dim tracking-[0.6em] text-[10px] uppercase font-bold">Echoes of the Abyss</p>
-                  <div className="h-px w-12 bg-gradient-to-l from-transparent to-text_dim/30"></div>
+                <h1 className="font-display text-5xl md:text-6xl font-bold text-gold tracking-[0.3em] gold-glow uppercase">
+                  DEPTHS<br />LEDGER
+                </h1>
+                <div className="flex items-center justify-center gap-4 mt-4">
+                  <div className="h-px w-12 bg-gradient-to-r from-transparent to-border" />
+                  <p className="text-muted tracking-[0.4em] text-[10px] uppercase font-medium">Echoes of the Abyss</p>
+                  <div className="h-px w-12 bg-gradient-to-l from-transparent to-border" />
                 </div>
               </div>
             </div>
             
-            <div className="abyss-card rounded-2xl p-8 border-white/5 bg-black/40 backdrop-blur-xl">
+            <div className="panel p-8">
               <CharacterSelector
                 database={database}
                 activeCharacter={null}
@@ -131,7 +136,7 @@ function MainApp() {
         </div>
         
         <footer className="relative z-10 py-8 text-center">
-          <p className="text-[10px] text-text_dim/40 tracking-[0.3em] uppercase font-medium">May the tides guide your path</p>
+          <p className="heading-rune opacity-40">— May the tides guide your path —</p>
         </footer>
       </div>
     );
@@ -139,42 +144,39 @@ function MainApp() {
 
   if (view === "creator") {
     return (
-      <div className="min-h-screen bg-abyss_dark relative overflow-hidden flex flex-col">
+      <div className="min-h-screen relative overflow-hidden flex flex-col" style={{ backgroundColor: 'oklch(0.11 0.03 225)' }}>
         <div className="abyss-bg" />
-        <header className="relative z-10 border-b border-white/5 bg-black/20 backdrop-blur-md py-6 px-8">
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <header className="relative z-10 border-b border-rune backdrop-blur-md py-4 px-6 md:px-8">
+          <div className="max-w-4xl mx-auto flex justify-between items-center">
             <div className="flex items-center gap-4 group cursor-pointer" onClick={() => { resetActiveCharacter(); navigateTo("list"); }}>
-              <div className="w-10 h-10 rounded-xl bg-cyan_wind/10 flex items-center justify-center border border-cyan_wind/20 group-hover:border-cyan_wind/40 transition-all">
-                <svg className="w-5 h-5 text-cyan_wind" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L9 7H3l5 6-2 10 6-8 6 8-2-10 5-6h-6z" />
-                </svg>
-              </div>
+              <div className="echo-orb w-10 h-10" />
               <div>
-                <h2 className="text-lg font-serif font-bold text-white tracking-widest uppercase">{activeCharacter.name}</h2>
-                <p className="text-[10px] text-cyan_wind tracking-widest uppercase font-bold">Sculpting the vessel</p>
+                <h2 className="font-display text-lg font-bold text-foreground tracking-[0.2em] uppercase">{activeCharacter.name}</h2>
+                <p className="text-accent text-[10px] tracking-rune uppercase font-medium">Sculpting the vessel</p>
               </div>
             </div>
             <button
               onClick={signOut}
-              className="abyss-btn-secondary px-4 py-2 rounded-lg text-[10px] tracking-widest uppercase font-bold"
+              className="grimoire-btn-secondary px-4 py-2 text-[10px] tracking-rune uppercase font-semibold"
             >
               Logout
             </button>
           </div>
         </header>
 
-        <div className="relative z-10 flex-1 flex items-center justify-center p-8">
-          <div className="w-full max-w-3xl">
-            <div className="abyss-card rounded-2xl p-10 border-white/5 bg-black/40 backdrop-blur-xl">
+        <div className="relative z-10 flex-1 flex items-center justify-center p-6 md:p-8">
+          <div className="w-full max-w-2xl">
+            <div className="panel p-6 md:p-10">
               <CharacterBuilder
                 character={activeCharacter}
                 onUpdate={(updates) => updateCharacter(activeCharacter.id, updates)}
               />
               
-              <div className="mt-10 pt-8 border-t border-white/5 flex flex-col gap-4">
+              <div className="mt-10 pt-8 border-t border-rune flex flex-col gap-4">
                 <button
                   onClick={() => navigateTo("tracker")}
-                  className="abyss-btn w-full py-5 rounded-xl text-xs font-bold shadow-lg shadow-cyan_wind/10"
+                  className="grimoire-btn w-full py-4 text-xs font-semibold shadow-lg"
+                  style={{ boxShadow: '0 0 20px oklch(0.80 0.14 80 / 0.15)' }}
                 >
                   Confirm Incarnation
                 </button>
@@ -184,7 +186,7 @@ function MainApp() {
                     resetActiveCharacter();
                     navigateTo("list");
                   }}
-                  className="text-text_dim hover:text-white text-[10px] tracking-[0.3em] uppercase font-bold transition-colors py-2"
+                  className="text-muted hover:text-gold text-[10px] tracking-rune uppercase font-semibold transition-colors py-2"
                 >
                   ← Return to Library
                 </button>
@@ -197,26 +199,36 @@ function MainApp() {
   }
 
   return (
-    <div className="min-h-screen bg-abyss_dark relative overflow-hidden flex flex-col">
+    <div className="min-h-screen relative overflow-hidden flex flex-col" style={{ backgroundColor: 'oklch(0.11 0.03 225)' }}>
       <div className="abyss-bg" />
       <div className="relative z-10 flex flex-col min-h-screen">
-        <header className={`border-b border-white/5 bg-black/40 backdrop-blur-xl fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
-          <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center gap-2 md:gap-4">
-            <div className="flex items-center gap-3 md:gap-5 group cursor-pointer min-w-0" onClick={() => { resetActiveCharacter(); navigateTo("list"); }}>
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-cyan_wind/10 flex items-center justify-center border border-cyan_wind/20 group-hover:border-cyan_wind/40 transition-all shadow-[0_0_15px_rgba(0,229,255,0.1)] shrink-0">
-                <svg className="w-4 h-4 md:w-5 md:h-5 text-cyan_wind" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L9 7H3l5 6-2 10 6-8 6 8-2-10 5-6h-6z" />
-                </svg>
-              </div>
+        <header 
+          className={`backdrop-blur-xl fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+            scrolled ? 'py-2' : 'py-3'
+          }`}
+          style={{ backgroundColor: 'oklch(0.11 0.03 225 / 0.9)', borderBottom: '1px solid oklch(0.78 0.13 78 / 0.22)' }}
+        >
+          <div className="max-w-6xl mx-auto px-4 md:px-6 flex justify-between items-center gap-4">
+            <div 
+              className="flex items-center gap-3 group cursor-pointer min-w-0" 
+              onClick={() => { resetActiveCharacter(); navigateTo("list"); }}
+            >
+              <div className="echo-orb w-8 h-8 md:w-10 md:h-10 shrink-0" />
               <div className="flex flex-col min-w-0">
                 <div className="flex items-center gap-2 md:gap-3">
-                  <h1 className={`font-serif font-bold text-white tracking-widest uppercase transition-all truncate ${scrolled ? 'text-xs md:text-sm' : 'text-sm md:text-xl'}`}>{activeCharacter.name}</h1>
+                  <h1 
+                    className={`font-display font-bold text-foreground tracking-[0.2em] uppercase transition-all truncate ${
+                      scrolled ? 'text-xs md:text-sm' : 'text-sm md:text-base'
+                    }`}
+                  >
+                    {activeCharacter.name}
+                  </h1>
                   {activeCharacter.buildUrl && (
                     <a
                       href={activeCharacter.buildUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-text_dim hover:text-cyan_wind transition-colors shrink-0"
+                      className="text-muted hover:text-accent transition-colors shrink-0"
                       title="View Build Archive"
                     >
                       <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,16 +236,18 @@ function MainApp() {
                       </svg>
                     </a>
                   )}
-                  <div className="hidden md:block px-2 py-0.5 rounded bg-cyan_wind/10 border border-cyan_wind/20 text-[9px] text-cyan_wind tracking-widest font-bold uppercase shrink-0">Active</div>
+                  <div className="hidden md:block px-2 py-0.5 rounded text-[9px] text-accent tracking-rune uppercase font-medium shrink-0 border" style={{ backgroundColor: 'oklch(0.55 0.13 215 / 0.1)', borderColor: 'oklch(0.55 0.13 215 / 0.3)' }}>
+                    Active
+                  </div>
                 </div>
-                <p className="text-text_dim text-[8px] md:text-[10px] tracking-[0.2em] font-bold uppercase mt-0.5 truncate">
-                  {activeCharacter.race || 'Sin raza'} <span className="text-white/10 mx-1">•</span> {activeCharacter.weapon || 'Sin arma'}
+                <p className="text-muted text-[8px] md:text-[9px] tracking-[0.15em] font-medium uppercase mt-0.5 truncate">
+                  {activeCharacter.race || 'Sin raza'} <span className="opacity-30 mx-1">•</span> {activeCharacter.weapon || 'Sin arma'}
                 </p>
               </div>
             </div>
             
-            <nav className="flex items-center gap-2 md:gap-4 shrink-0">
-              <div className="max-w-[120px] md:max-w-[200px]">
+            <nav className="flex items-center gap-3 md:gap-4 shrink-0">
+              <div className="max-w-[130px] md:max-w-[180px]">
                 <select
                   value={activeCharacter.id}
                   onChange={(e) => {
@@ -247,10 +261,10 @@ function MainApp() {
                       }
                     }
                   }}
-                  className="abyss-input w-full py-1.5 md:py-2 px-2 md:px-3 rounded-lg text-[8px] md:text-[10px] tracking-widest uppercase bg-black/40 border border-white/10 text-white focus:border-cyan_wind/50"
+                  className="grimoire-input grimoire-select w-full py-2 px-3 rounded text-[9px] tracking-[0.1em] uppercase"
                 >
                   {database.characters.map((char) => (
-                    <option key={char.id} value={char.id}>
+                    <option key={char.id} value={char.id} style={{ backgroundColor: 'oklch(0.11 0.03 225)' }}>
                       {char.name || 'Sin nombre'}
                     </option>
                   ))}
@@ -258,7 +272,7 @@ function MainApp() {
               </div>
               <button
                 onClick={signOut}
-                className="abyss-btn-secondary px-4 py-2.5 rounded-xl text-[10px] tracking-[0.2em] uppercase font-bold hover:text-blood transition-colors"
+                className="grimoire-btn-secondary px-4 py-2 text-[10px] tracking-rune uppercase font-medium hover:text-gold transition-colors"
               >
                 Logout
               </button>
@@ -266,22 +280,20 @@ function MainApp() {
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto w-full px-4 md:px-8 pt-24 md:pt-28 pb-10 flex-1">
+        <main className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-20 md:pt-24 pb-10 flex-1">
           <DashboardView
             character={activeCharacter}
             onUpdate={handleCharacterUpdate}
             navigateToCreator={() => navigateTo("creator")}
           />
         </main>
-        <footer className="py-12 border-t border-white/5 text-center mt-auto">
-          <div className="max-w-2xl mx-auto px-8">
-            <div className="w-12 h-12 mx-auto mb-6 text-white/5">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L9 7H3l5 6-2 10 6-8 6 8-2-10 5-6h-6z" />
-              </svg>
-            </div>
-            <p className="text-text_dim text-[10px] tracking-[0.4em] uppercase font-bold mb-2 italic">Non sibi sed aliis</p>
-            <p className="text-text_dim/30 text-[9px] tracking-widest uppercase font-medium">Deepwoken Wind Tracker © 2026</p>
+        <footer className="py-10 border-t border-rune text-center mt-auto">
+          <div className="max-w-2xl mx-auto px-6">
+            <div className="echo-orb w-10 h-10 mx-auto mb-4 opacity-20" />
+            <p className="heading-rune opacity-50 mb-2">— THE DEPTHS REMEMBER —</p>
+            <p className="text-muted text-[9px] tracking-[0.2em] uppercase font-medium opacity-30">
+              Deepwoken Wind Tracker © 2026
+            </p>
           </div>
         </footer>
       </div>

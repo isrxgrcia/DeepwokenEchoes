@@ -33,18 +33,18 @@ export function CharacterSelector({
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center px-1">
+      <div className="flex justify-between items-center">
         <div className="flex flex-col gap-0.5">
-          <h2 className="text-[11px] font-serif text-text_main tracking-[0.3em] uppercase font-bold">The Great Library</h2>
-          <p className="text-[10px] text-text_dim tracking-tight">Active Vessels</p>
+          <h2 className="text-[11px] font-display text-foreground tracking-rune uppercase font-semibold">The Great Library</h2>
+          <p className="text-muted text-[10px] tracking-wide">Active Vessels</p>
         </div>
         {canAddMore && (
           <button
             onClick={() => setShowAdd(!showAdd)}
-            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 border ${
+            className={`w-8 h-8 rounded flex items-center justify-center transition-all duration-300 border ${
               showAdd 
-                ? "bg-cyan_wind/10 border-cyan_wind/40 text-cyan_wind" 
-                : "bg-white/5 border-white/10 text-text_dim hover:border-white/30 hover:text-text_main"
+                ? "bg-accent/10 border-accent text-accent" 
+                : "border-rune text-muted hover:border-[oklch(0.78_0.13_78/0.4)] hover:text-foreground"
             }`}
             title="Create New Vessel"
           >
@@ -56,8 +56,11 @@ export function CharacterSelector({
       </div>
 
       {showAdd && (
-        <div className="flex flex-col gap-3 p-4 abyss-card rounded-xl border-cyan_wind/20 shadow-[0_0_15px_rgba(0,229,255,0.05)] depth-fade-in">
-          <div className="text-[10px] text-cyan_wind tracking-[0.2em] uppercase font-bold mb-1">Manifest New Soul</div>
+        <div 
+          className="flex flex-col gap-3 p-4 panel animate-unfurl"
+          style={{ borderColor: 'oklch(0.55 0.13 215 / 0.3)' }}
+        >
+          <div className="text-accent text-[10px] tracking-rune uppercase font-bold mb-1">Manifest New Soul</div>
           <div className="flex gap-2">
             <input
               type="text"
@@ -66,15 +69,15 @@ export function CharacterSelector({
               onKeyDown={(e) => e.key === "Enter" && handleAdd()}
               placeholder="Name this vessel..."
               maxLength={20}
-              className="abyss-input flex-1 rounded-lg px-4 py-2.5 text-sm"
+              className="grimoire-input flex-1 rounded px-4 py-2.5 text-sm"
               autoFocus
             />
             <button
               onClick={handleAdd}
               disabled={!newName.trim()}
-              className="abyss-btn px-5 py-2.5 rounded-lg text-[10px] tracking-widest disabled:opacity-20"
+              className="grimoire-btn px-5 py-2.5 text-[10px] disabled:opacity-20"
             >
-              INVOKE
+              Invoke
             </button>
           </div>
         </div>
@@ -91,20 +94,28 @@ export function CharacterSelector({
             <div
               key={char.id}
               onClick={() => onSelect(char.id)}
-              className={`abyss-card group rounded-xl p-5 cursor-pointer transition-all duration-300 relative overflow-hidden ${
+              className={`panel group cursor-pointer transition-all duration-300 relative ${
                 isActive 
-                  ? "bg-white/5 border-cyan_wind/30 shadow-[0_0_20px_rgba(0,229,255,0.05)]" 
-                  : "hover:bg-white/5 border-white/5"
+                  ? "border border-rune" 
+                  : "hover:border-[oklch(0.78_0.13_78/0.3)]"
               }`}
             >
               {isActive && (
-                <div className="absolute top-0 left-0 bottom-0 w-1 bg-cyan_wind shadow-[2px_0_10px_rgba(0,229,255,0.2)]"></div>
+                <div 
+                  className="absolute top-0 left-0 bottom-0 w-0.5"
+                  style={{ 
+                    backgroundColor: 'oklch(0.55 0.13 215)',
+                    boxShadow: '2px 0 10px oklch(0.55 0.13 215 / 0.3)'
+                  }}
+                />
               )}
               
-              <div className="flex justify-between items-center relative z-10">
+              <div className="flex justify-between items-center relative z-10 px-2">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className={`font-serif text-base tracking-widest transition-colors ${isActive ? "text-cyan_wind" : "text-text_main group-hover:text-white"}`}>
+                    <h3 className={`font-display text-sm tracking-rune transition-colors ${
+                      isActive ? "text-gold" : "text-foreground group-hover:text-gold"
+                    }`}>
                       {char.name}
                     </h3>
                     {char.buildUrl && (
@@ -113,7 +124,7 @@ export function CharacterSelector({
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="text-text_dim hover:text-cyan_wind transition-colors"
+                        className="text-muted hover:text-accent transition-colors"
                         title="View Build Archive"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,20 +132,20 @@ export function CharacterSelector({
                         </svg>
                       </a>
                     )}
-                    {isActive && <div className="w-1.5 h-1.5 rounded-full bg-cyan_wind cyan-depth-glow"></div>}
+                    {isActive && <div className="echo-orb w-1.5 h-1.5 animate-glow" />}
                   </div>
-                  <p className="text-[10px] text-text_dim mt-1.5 tracking-wider uppercase font-medium">
-                    <span className={char.race ? "text-text_main" : ""}>{char.race || "Soulbound"}</span>
-                    <span className="mx-2 text-white/10">•</span>
-                    <span className={char.weapon ? "text-text_main" : ""}>{char.weapon || "Unarmed"}</span>
+                  <p className="text-muted text-[10px] mt-1.5 tracking-wide uppercase font-medium">
+                    <span className={char.race ? "text-foreground" : ""}>{char.race || "Soulbound"}</span>
+                    <span className="opacity-20 mx-2">•</span>
+                    <span className={char.weapon ? "text-foreground" : ""}>{char.weapon || "Unarmed"}</span>
                   </p>
                 </div>
                 
                 <div className="flex items-center gap-6 shrink-0">
                   <div className="text-right">
-                    <div className="text-[10px] text-text_dim tracking-widest uppercase mb-0.5 opacity-50">Rank</div>
+                    <div className="text-muted text-[9px] tracking-rune uppercase mb-0.5 opacity-50">Rank</div>
                     <div
-                      className="text-2xl font-serif font-bold transition-all duration-300 group-hover:scale-110"
+                      className="text-2xl font-display font-bold transition-all duration-300 group-hover:scale-110"
                       style={{ color: rankColor, textShadow: `0 0 20px ${rankColor}30` }}
                     >
                       {rank}
@@ -146,7 +157,7 @@ export function CharacterSelector({
                       e.stopPropagation();
                       onDelete(char.id);
                     }}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-text_dim/30 hover:text-blood hover:bg-blood/10 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    className="w-8 h-8 rounded flex items-center justify-center text-muted/30 hover:text-[oklch(0.42_0.18_25)] hover:bg-[oklch(0.42_0.18_25/0.1)] transition-all duration-300 opacity-0 group-hover:opacity-100"
                     title="Exile Vessel"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,11 +171,12 @@ export function CharacterSelector({
         })}
 
         {database.characters.length === 0 && !showAdd && (
-          <div className="flex flex-col items-center justify-center py-12 px-6 abyss-card rounded-xl border-dashed border-white/5 opacity-50">
-            <svg className="w-12 h-12 text-white/5 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-            <p className="text-text_dim text-xs text-center tracking-[0.2em] uppercase font-light">
+          <div 
+            className="flex flex-col items-center justify-center py-12 px-6 panel rounded border-dashed opacity-50"
+            style={{ borderColor: 'oklch(0.78 0.13 78 / 0.15)' }}
+          >
+            <div className="echo-orb w-12 h-12 mb-4 opacity-30" />
+            <p className="text-muted text-xs text-center tracking-rune uppercase font-light">
               No vessels recorded in this era
             </p>
           </div>

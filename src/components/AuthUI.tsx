@@ -49,90 +49,90 @@ export function AuthUI() {
   };
 
   return (
-    <div className="min-h-screen bg-abyss_dark relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4" style={{ backgroundColor: 'oklch(0.11 0.03 225)' }}>
       <div className="abyss-bg" />
-      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-12">
-            <div className="inline-block mb-6 relative">
-              <svg className="w-20 h-20 mx-auto text-cyan_wind cyan-depth-glow" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L9 7H3l5 6-2 10 6-8 6 8-2-10 5-6h-6z" />
-              </svg>
-              <div className="absolute inset-0 bg-cyan_wind/10 blur-xl rounded-full" />
-            </div>
-            <h1 className="text-6xl font-serif font-bold text-cyan_wind tracking-[0.4em] cyan-depth-glow">DEEPWOKEN</h1>
-            <p className="text-text_dim mt-4 tracking-[0.5em] text-sm uppercase font-light">Wind Tracker</p>
+      <div className="relative z-10 w-full max-w-md">
+        <div className="text-center mb-10">
+          <div className="inline-block mb-6 relative">
+            <div className="echo-orb w-16 h-16 mx-auto animate-glow" />
+            <div className="absolute inset-0 bg-accent/10 blur-2xl rounded-full" />
           </div>
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-gold tracking-[0.3em] gold-glow uppercase">
+            DEPTHS<br />LEDGER
+          </h1>
+          <p className="text-muted mt-4 tracking-[0.4em] text-xs uppercase font-medium">Wind Tracker</p>
+        </div>
 
-          <div className="abyss-card rounded-lg p-8">
-            <h2 className="text-xl font-serif text-center text-text_main mb-6">
-              {isRegister ? "Create Account" : "Enter the Abyss"}
-            </h2>
+        <div className="panel p-8">
+          <h2 className="font-display text-center text-foreground tracking-rune uppercase mb-6 text-sm">
+            {isRegister ? "Inscribe your seal" : "Enter the Abyss"}
+          </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="block text-muted text-[10px] tracking-rune uppercase mb-2 font-semibold">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="grimoire-input w-full px-4 py-3 rounded"
+                placeholder="your@email.com"
+                autoComplete="email"
+              />
+            </div>
+
+            <div>
+              <label className="block text-muted text-[10px] tracking-rune uppercase mb-2 font-semibold">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="grimoire-input w-full px-4 py-3 rounded"
+                placeholder="••••••••"
+                autoComplete={isRegister ? "new-password" : "current-password"}
+              />
+            </div>
+
+            {isRegister && (
               <div>
-                <label className="block text-text_dim text-xs tracking-widest uppercase mb-2">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="abyss-input w-full px-4 py-3 rounded font-light"
-                  placeholder="your@email.com"
-                  autoComplete="email"
-                />
-              </div>
-
-              <div>
-                <label className="block text-text_dim text-xs tracking-widest uppercase mb-2">Password</label>
+                <label className="block text-muted text-[10px] tracking-rune uppercase mb-2 font-semibold">Confirm Password</label>
                 <input
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="abyss-input w-full px-4 py-3 rounded font-light"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="grimoire-input w-full px-4 py-3 rounded"
                   placeholder="••••••••"
-                  autoComplete={isRegister ? "new-password" : "current-password"}
+                  autoComplete="new-password"
                 />
               </div>
+            )}
 
-              {isRegister && (
-                <div>
-                  <label className="block text-text_dim text-xs tracking-widest uppercase mb-2">Confirm Password</label>
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="abyss-input w-full px-4 py-3 rounded font-light"
-                    placeholder="••••••••"
-                    autoComplete="new-password"
-                  />
-                </div>
-              )}
+            {error && (
+              <div className="text-[oklch(0.42_0.18_25)] text-sm text-center py-2">
+                {error}
+              </div>
+            )}
 
-              {error && (
-                <div className="text-blood text-sm text-center py-2">{error}</div>
-              )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="grimoire-btn w-full py-4 rounded text-xs font-semibold disabled:opacity-50"
+            >
+              {loading ? "Loading..." : isRegister ? "Inscribe" : "Descend"}
+            </button>
+          </form>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="abyss-btn w-full py-4 rounded text-sm disabled:opacity-50"
-              >
-                {loading ? "Loading..." : isRegister ? "Register" : "Login"}
-              </button>
-            </form>
-
-            <div className="mt-6 text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsRegister(!isRegister);
-                  setError("");
-                }}
-                className="text-text_dim text-sm hover:text-cyan_wind transition-colors"
-              >
-                {isRegister ? "Already have an account? Login" : "No account? Register"}
-              </button>
-            </div>
+          <div className="mt-6 text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setIsRegister(!isRegister);
+                setError("");
+              }}
+              className="text-muted text-sm hover:text-gold transition-colors"
+            >
+              {isRegister ? "Already inscribed? Enter the Abyss" : "New soul? Inscribe your seal"}
+            </button>
           </div>
         </div>
       </div>

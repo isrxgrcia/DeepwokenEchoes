@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../contexts/AuthContext";
 import type { Character, CharacterDatabase } from "../types";
@@ -18,7 +18,7 @@ const createEmptyCharacter = (name: string): Omit<Character, "id" | "createdAt">
 });
 
 export function useCharacterDatabase() {
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCharacterId, setActiveCharacterIdLocal] = useState<string | null>(() => {
@@ -29,46 +29,44 @@ export function useCharacterDatabase() {
     }
   });
 
-  const loadCharacters = useCallback(async () => {
+  useEffect(() => {
     if (!user) {
       setCharacters([]);
+      setActiveCharacterIdLocal(null);
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch { /* ignore */ }
       setLoading(false);
       return;
     }
 
     setLoading(true);
-    const { data, error } = await supabase
+    supabase
       .from("characters")
       .select("*")
-      .order("created_at", { ascending: true });
-
-    if (error) {
-      console.error("Error fetching characters:", error);
-      setCharacters([]);
-    } else {
-      setCharacters(
-        (data ?? []).map((row) => ({
-          id: row.id,
-          name: row.name,
-          race: row.race,
-          weapon: row.weapon,
-          attunements: row.attunements ?? [],
-          completedTasks: row.completed_tasks ?? [],
-          activeModifiers: row.active_modifiers ?? [],
-          createdAt: new Date(row.created_at).getTime(),
-        }))
-      );
-    }
-    setLoading(false);
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: true })
+      .then(({ data, error }) => {
+        if (error) {
+          console.error("Error fetching characters:", error);
+          setCharacters([]);
+        } else {
+          setCharacters(
+            (data ?? []).map((row) => ({
+              id: row.id,
+              name: row.name,
+              race: row.race,
+              weapon: row.weapon,
+              attunements: row.attunements ?? [],
+              completedTasks: row.completed_tasks ?? [],
+              activeModifiers: row.active_modifiers ?? [],
+              createdAt: new Date(row.created_at).getTime(),
+            }))
+          );
+        }
+        setLoading(false);
+      });
   }, [user]);
-
-  const initialized = useMemo(() => !authLoading, [authLoading]);
-
-  useEffect(() => {
-    if (initialized && loading) {
-      loadCharacters();
-    }
-  }, [initialized, loading, loadCharacters]);
 
   const saveActiveId = useCallback((id: string | null) => {
     setActiveCharacterIdLocal(id);
